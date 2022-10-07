@@ -34,9 +34,6 @@ class BuildingShader extends FlxShader
     void main()
     {
 
-     #pragma body
-
-
       vec4 color = flixel_texture2D(bitmap,openfl_TextureCoordv);
       if (color.a > 0.0)
         color-=alphaShit;
@@ -61,8 +58,6 @@ class ChromaticAberrationShader extends FlxShader
 
 		void main()
 		{
-                  #pragma body
-
 			vec4 col1 = texture2D(bitmap, openfl_TextureCoordv.st - vec2(rOffset, 0.0));
 			vec4 col2 = texture2D(bitmap, openfl_TextureCoordv.st - vec2(gOffset, 0.0));
 			vec4 col3 = texture2D(bitmap, openfl_TextureCoordv.st - vec2(bOffset, 0.0));
@@ -121,7 +116,6 @@ class Scanline extends FlxShader
 	uniform bool lockAlpha = false;
 		void main()
 		{
-                  #pragma body
 			if (mod(floor(openfl_TextureCoordv.y * openfl_TextureSize.y / scale), 2.0) == 0.0 ){
 				float bitch = 1.0;
 	
@@ -200,8 +194,6 @@ class Tiltshift extends FlxShader
 		const float maxOffs     = (float(steps-1.0)) / +2.0;
 		 
 		void main() {
-
-                 #pragma body
 			float amount;
 			vec4 blurred;
 				
@@ -240,10 +232,9 @@ class Tiltshift extends FlxShader
 }
 class GreyscaleEffect extends Effect{
 	
-	public var shader:GreyscaleShader;
-	shader = new GreyscaleShader();
-	public function new()
-	{
+	public var shader:GreyscaleShader = new GreyscaleShader();
+	
+	public function new(){
 		
 	}
 	
@@ -253,7 +244,6 @@ class GreyscaleShader extends FlxShader{
 	@:glFragmentSource('
 	#pragma header
 	void main() {
-         #pragma body
 		vec4 color = texture2D(bitmap, openfl_TextureCoordv);
 		float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
 		gl_FragColor = vec4(vec3(gray), color.a);
@@ -414,7 +404,6 @@ class Grain extends FlxShader
 
 		void main()
 		{
-                  #pragma body
 			vec2 texCoord = openfl_TextureCoordv.st;
 
 			vec3 rotOffset = vec3(1.425,3.892,5.835); //rotation offset values
@@ -456,10 +445,8 @@ class Grain extends FlxShader
 
 class VCRDistortionEffect extends Effect
 {
-  public var shader:VCRDistortionShader;
+  public var shader:VCRDistortionShader = new VCRDistortionShader();
   public function new(glitchFactor:Float,distortion:Bool=true,perspectiveOn:Bool=true,vignetteMoving:Bool=true){
-	
-	shader = new VCRDistortionShader();  
     shader.iTime.value = [0];
     shader.vignetteOn.value = [true];
     shader.perspectiveOn.value = [perspectiveOn];
@@ -593,7 +580,6 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
     }
     void main()
     {
-      #pragma body
     	vec2 uv = openfl_TextureCoordv;
       vec2 curUV = screenDistort(uv);
     	uv = scandistort(curUV);
@@ -637,9 +623,8 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
 
 class ThreeDEffect extends Effect{
 	
-	public var shader:ThreeDShader;
+	public var shader:ThreeDShader = new ThreeDShader();
 	public function new(xrotation:Float=0,yrotation:Float=0,zrotation:Float=0,depth:Float=0){
-		shader = new ThreeDShader();
 		shader.xrot.value = [xrotation];
 		shader.yrot.value = [yrotation];
 		shader.zrot.value = [zrotation];
@@ -692,8 +677,6 @@ vec2 raytraceTexturedQuad(in vec3 rayOrigin, in vec3 rayDirection, in vec3 quadC
 }
 
 void main() {
-
-#pragma body
 	vec4 texColor = texture2D(bitmap, openfl_TextureCoordv);
     //Screen UV goes from 0 - 1 along each axis
     vec2 screenUV = openfl_TextureCoordv;
@@ -738,10 +721,9 @@ void main() {
 
 class FuckingTriangleEffect extends Effect{
 	
-	public var shader:FuckingTriangle;
+	public var shader:FuckingTriangle = new FuckingTriangle();
 	
 	public function new(rotx:Float, roty:Float){
-		shader = new FuckingTriangle()!
 		shader.rotX.value = [rotx];
 		shader.rotY.value = [roty];
 		
@@ -871,8 +853,6 @@ class FuckingTriangle extends FlxShader{
 
 void main()
 {
-
-#pragma body
     vec2 ndc = ((gl_FragCoord.xy * 2.) / openfl_TextureSize.xy) - vec2(1.);
     float aspect = openfl_TextureSize.x / openfl_TextureSize.y;
     vec3 outColor = vec3(.4,.6,.9);
@@ -899,9 +879,8 @@ void main()
 }
 class BloomEffect extends Effect{
 	
-	public var shader:BloomShader;
+	public var shader:BloomShader = new BloomShader();
 	public function new(blurSize:Float, intensity:Float){
-		shader = new BloomShader();
 		shader.blurSize.value = [blurSize];
 		shader.intensity.value = [intensity];
 		
@@ -922,8 +901,6 @@ class BloomShader extends FlxShader{
 	uniform float blurSize = 1.0/512.0;
 void main()
 {
-
-#pragma body
    vec4 sum = vec4(0);
    vec2 texcoord = openfl_TextureCoordv;
    int j;
@@ -1009,7 +986,7 @@ _/__________\_
 
 class GlitchEffect extends Effect
 {
-    public var shader:GlitchShader;
+    public var shader:GlitchShader = new GlitchShader();
 
     public var waveSpeed(default, set):Float = 0;
 	public var waveFrequency(default, set):Float = 0;
@@ -1017,7 +994,6 @@ class GlitchEffect extends Effect
 
 	public function new(waveSpeed:Float,waveFrequency:Float,waveAmplitude:Float):Void
 	{
-		shader = new GlitchShader();
 		shader.uTime.value = [0];
 		this.waveSpeed = waveSpeed;
 		this.waveFrequency = waveFrequency;
@@ -1056,7 +1032,7 @@ class GlitchEffect extends Effect
 
 class DistortBGEffect extends Effect
 {
-    public var shader:DistortBGShader;
+    public var shader:DistortBGShader = new DistortBGShader();
 
     public var waveSpeed(default, set):Float = 0;
 	public var waveFrequency(default, set):Float = 0;
@@ -1064,7 +1040,6 @@ class DistortBGEffect extends Effect
 
 	public function new(waveSpeed:Float,waveFrequency:Float,waveAmplitude:Float):Void
 	{
-		shader = new DistortBGShader();
 		this.waveSpeed = waveSpeed;
 		this.waveFrequency = waveFrequency;
 		this.waveAmplitude = waveAmplitude;
@@ -1104,7 +1079,7 @@ class DistortBGEffect extends Effect
 
 class PulseEffect extends Effect
 {
-    public var shader:PulseShader;
+    public var shader:PulseShader = new PulseShader();
 
     public var waveSpeed(default, set):Float = 0;
 	public var waveFrequency(default, set):Float = 0;
@@ -1113,7 +1088,6 @@ class PulseEffect extends Effect
 
 	public function new(waveSpeed:Float,waveFrequency:Float,waveAmplitude:Float):Void
 	{
-		shader = new PulseShader();
 		this.waveSpeed = waveSpeed;
 		this.waveFrequency = waveFrequency;
 		this.waveAmplitude = waveAmplitude;
@@ -1162,8 +1136,7 @@ class PulseEffect extends Effect
 
 class InvertColorsEffect extends Effect
 {
-    public var shader:InvertShader;
-	shader = new InvertShader();
+    public var shader:InvertShader = new InvertShader();
 	public function new(lockAlpha){
 	//	shader.lockAlpha.value = [lockAlpha];
 	}
@@ -1289,8 +1262,6 @@ class DistortBGShader extends FlxShader
 
     void main()
     {
-
-#pragma body
         vec2 uv = sineWave(openfl_TextureCoordv);
         gl_FragColor = makeBlack(texture2D(bitmap, uv)) + texture2D(bitmap,openfl_TextureCoordv);
     }')
@@ -1346,7 +1317,6 @@ class PulseShader extends FlxShader
 
     void main()
     {
-      #pragma body
         vec2 uv = openfl_TextureCoordv;
         gl_FragColor = sineWave(texture2D(bitmap, uv),uv);
     }')
