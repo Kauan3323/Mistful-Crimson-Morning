@@ -242,7 +242,8 @@ class GreyscaleEffect extends Effect{
 	
 	public var shader:GreyscaleShader;
 	shader new GreyscaleShader();
-	public function new(){
+	public function new()
+	{
 		
 	}
 	
