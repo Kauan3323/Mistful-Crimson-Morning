@@ -445,7 +445,7 @@ class Grain extends FlxShader
 
 class VCRDistortionEffect extends Effect
 {
-  public var shader:VCRDistortionShader = new VCRDistortionShader();
+  public var shader:VCRDistortionShader;
   public function new(glitchFactor:Float,distortion:Bool=true,perspectiveOn:Bool=true,vignetteMoving:Bool=true){
 	shader = new VCRDistortionShader();
     shader.iTime.value = [0];
