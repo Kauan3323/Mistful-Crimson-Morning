@@ -23,7 +23,7 @@ function onEvent(name)
 	end
 
 function onUpdate()
-	if keyReleased('space') and getProperty('warn.x') ~= 'warn.x' then
+	if keyReleased('up') and getProperty('warn.x') ~= 'warn.x' then
 		removeLuaSprite('warn',true);
 		cancelTimer('warn');
 		triggerEvent('Play Animation', 'shoot', 'phase2alt')
